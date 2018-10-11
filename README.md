@@ -1,5 +1,4 @@
 // peakfind
-
 #include<fstream>
 #include<iostream>
 #include<stdlib.h>
@@ -24,73 +23,86 @@ int main(int argc,char *argv[]){
 	strcat(ofileDir,"/final.peak");
 	inFile.open(ifileDir,ios::in);
 	outFile.open(ofileDir,ios::out);
-	cout << "argv[1]=" << argv[1] << endl;
 	inFile >> m >> n;
 	cout << m <<" " << n << endl;
 	queue <int*> B;
-	int A[m][n];
+	int A[3][n];
 	queue <int> Ax,Ay;
 	for(int i =0;i<m;i++){
 		for(int j =0;j<n;j++){
-			inFile >> A[i][j];
+			inFile >> A[i%3][j];
+			if(i>=1){
+				if(j>=1){
+				int comrow = (i-1)%3;
+				int comcol = j-1;
+				if(comrow == 0){
+					if(comcol == 0){
+						if(A[comrow][comcol]>=A[comrow][comcol+1]&&A[comrow][comcol]>=A[(comrow+1)%3][comcol]){
+							Ax.push(i);
+							Ay.push(j);
+							ans++;
+						}
+					}
+					else{
+						if(A[comrow][comcol]>=A[(comrow+1)%3][comcol]&&A[comrow][comcol]>=A[comrow][comcol-1]&&A[comrow][comcol]>=A[comrow][comcol+1]){
+							Ax.push(i);
+							Ay.push(j);
+							ans++;
+						}
+					}
+					if(j == n-1&&A[comrow][j]>=A[comrow][j-1]&&A[comrow][j]>=A[(comrow+1)%3][j]){
+						Ax.push(i);
+						Ay.push(j+1);
+						ans++;
+					}
+				}
+				else{
+					if(comcol == 0){
+						if(A[comrow][comcol]>=A[comrow][comcol+1]&&A[comrow][comcol]>=A[(comrow+1)%3][comcol]&&A[comrow][comcol]>=A[(comrow+2)%3][comcol]){
+							Ax.push(i);
+							Ay.push(j);
+							ans++;
+						}
+					}
+					else{
+						if(A[comrow][comcol]>=A[(comrow+1)%3][comcol]&&A[comrow][comcol]>=A[(comrow+2)%3][comcol]&&A[comrow][comcol]>=A[comrow][comcol-1]&&A[comrow][comcol]>=A[comrow][comcol+1]){
+							Ax.push(i);
+							Ay.push(j);
+							ans++;
+						}
+					}
+					if(j == n-1&&A[comrow][j]>=A[comrow][j-1]&&A[comrow][j]>=A[(comrow+1)%3][j]&&A[comrow][j]>=A[(comrow+2)%3][j]){
+						Ax.push(i);
+						Ay.push(j+1);
+						ans++;
+					}	
+				}
+				}
+			}
 		}
 	}
-	for(int i=0;i<m;i++){
-		for(int j=0;j<n;j++){
-			if(i==0){
-				if(j==0){
-					if(A[i][j]>=A[i][j+1]&&A[i][j]>=A[i+1][j]){
-						Ax.push(i+1);
-						Ay.push(j+1);
-						ans++;
-					}
-				}
-				else if (j == n-1){
-					if(A[i][j]>=A[i][j-1]&&A[i][j]>=A[i+1][j]){
-						Ax.push(i+1);
-						Ay.push(j+1);
-						ans++;
-					}
-				}
-				else{
-					if(A[i][j]>=A[i+1][j]&&A[i][j]>=A[i][j-1]&&A[i][j]>=A[i][j+1]){
-						Ax.push(i+1);
-						Ay.push(j+1);
-						ans++;
-					}
+	for(int j =1;j<n;j++){
+		int comrow = (m-1)%3;
+		int comcol = j-1;
+		if(comcol == 0){
+			if(A[comrow][comcol]>=A[(comrow+2)%3][comcol]&&A[comrow][comcol]>=A[comrow][comcol+1]){
+				Ax.push(m);
+				Ay.push(j);
+				ans++;
 				}
 			}
-			else if(i==m-1){
-				if(j==0){
-					if(A[i][j]>=A[i][j+1]&&A[i][j]>=A[i-1][j]){
-						Ax.push(i+1);
-						Ay.push(j+1);
-						ans++;
-					}
-				}
-				else if (j == n-1){
-					if(A[i][j]>=A[i][j-1]&&A[i][j]>=A[i-1][j]){
-						Ax.push(i+1);
-						Ay.push(j+1);
-						ans++;
-					}
-				}
-				else{
-					if(A[i][j]>=A[i-1][j]&&A[i][j]>=A[i][j-1]&&A[i][j]>=A[i][j+1]){
-						Ax.push(i+1);
-						Ay.push(j+1);
-						ans++;
-					}
-				}
-			}
-			else {
-				if(A[i][j]>=A[i-1][j]&&A[i][j]>=A[i+1][j]&&A[i][j]>=A[i][j-1]&&A[i][j]>=A[i][j+1]){
-					Ax.push(i+1);
-					Ay.push(j+1);
+			else{
+				if(A[comrow][comcol]>=A[(comrow+2)%3][comcol]&&A[comrow][comcol]>=A[comrow][comcol+1]&&A[comrow][comcol]>=A[comrow][comcol-1]){
+					Ax.push(m);
+					Ay.push(j);
 					ans++;
 				}
 			}
-		}
+			if(j == n-1&&A[comrow][j]>=A[(comrow+2)%3][j]&&A[comrow][j]>=A[comrow][j-1]){
+				Ax.push(m);
+				Ay.push(j+1);
+				ans++;
+			}
 	}
 	cout << ans <<endl;
 	outFile << ans <<endl;
