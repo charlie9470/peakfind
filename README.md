@@ -1,16 +1,30 @@
-# peakfind
+// peakfind
 
 #include<fstream>
 #include<iostream>
 #include<stdlib.h>
 #include<time.h>
 #include<queue>
+#include<string.h>
 using namespace std;
-int main(){
+
+char ifileDir[50];
+char ofileDir[50];
+
+ifstream inFile;
+ofstream outFile;
+	
+int main(int argc,char *argv[]){
 	int m,n;
 	int ans=0;
-	ifstream inFile("matrixsmall.data",ios::in);
-	ofstream outFile("final.peak",ios::out);
+	if(argc <=1) return 0xAAAA;
+	strcat(ifileDir,argv[1]);
+	strcat(ifileDir,"/matrix.data");
+	strcat(ofileDir,argv[1]);
+	strcat(ofileDir,"/final.peak");
+	inFile.open(ifileDir,ios::in);
+	outFile.open(ofileDir,ios::out);
+	cout << "argv[1]=" << argv[1] << endl;
 	inFile >> m >> n;
 	cout << m <<" " << n << endl;
 	queue <int*> B;
@@ -85,6 +99,7 @@ int main(){
 		outFile << Ax.front() << " " << Ay.front() << endl;
 		Ax.pop();
 		Ay.pop();
+//	}
 	}
 	return 0;
 }
