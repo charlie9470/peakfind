@@ -19,7 +19,7 @@ int main(int argc,char *argv[]){
 	int ans=0;
 	if(argc <=1) {
 		cout << "參數為空" <<endl;
-		return -1;
+		return 1;
 	}
 	strcat(ifileDir,argv[1]);
 	strcat(ifileDir,"/matrix.data");
@@ -28,7 +28,7 @@ int main(int argc,char *argv[]){
 	inFile.open(ifileDir,ios::in);
 	outFile.open(ofileDir,ios::out);
 	inFile >> m >> n;
-	cout << m <<" " << n << endl;
+//	cout << m <<" " << n << endl;
 	int A[3][n];
 	queue <int> Ax,Ay;
 	if(m != 1){
